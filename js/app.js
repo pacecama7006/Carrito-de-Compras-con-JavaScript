@@ -7,6 +7,8 @@ const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
 // Selecciono el listado de cursos
 const listaCursos = document.querySelector('#lista-cursos');
+// Arreglo que contiene los elementos del carrito
+let articulosCarrito = [];
 
 cargarEventListeners();
 // Función que sirve para escuchar los listeners
@@ -61,6 +63,62 @@ function leerDatosCurso(curso) {
         cantidad: 1
     }
     // Veo como se conforma el objeto
-    console.log(infoCurso);
+    // console.log(infoCurso);
+
+    // Agrega elementos al arreglo de carrito. Tomo una copia porque necesito la referencia
+    // de los artículos que se van agregando, por eso utilizo spread y le agrego el objeto
+    // infoCurso
+    articulosCarrito = [...articulosCarrito, infoCurso];
+    // Veo como se va formando el arrego
+    // console.log(articulosCarrito);
+
+    // Llamada a carritoHTML
+    carritoHTML();
     
+};
+// Fin leerDatosCurso
+
+// Muestra el carrito en el HTML
+function carritoHTML() {
+    // limpiar el HTML, para que no se muestren todas las copias del carrito
+    limpiarHTML();
+    // Recorro el carrito y genera el HTML
+    articulosCarrito.forEach(curso => {
+        // veo lo que tiene el curso
+        console.log(curso);
+        // Variable haciendo destructuring para tener los valores del curso
+        const {imagen, titulo, precio, cantidad, id} = curso;
+        
+        // Creo un trow para ir mostrando los elementos
+        const row = document.createElement('tr');
+        // Construyo el contenido de la fila
+        row.innerHTML = `
+            <td>
+                <img src="${imagen}" width="100" ></img>
+            </td>
+            <td>${titulo}</td>
+            <td>${precio}</td>
+            <td>${cantidad}</td>
+            <td>
+                <a href="#" class="borrar-curso" data-id="${id}" > X </a>
+            </td>
+        `;
+        
+        // Agrega el html del carrito al tbody
+        contenedorCarrito.appendChild(row);
+    });
+};
+// Fin carritoHTML
+
+// Elimina los cursos del Tbody
+function limpiarHTML() {
+    // Forma lenta de limpiar el carrito
+    contenedorCarrito.innerHTML = '';
+
+    // Forma óptima
+    // Mientras el contenedor tenga un elemento
+    while (contenedorCarrito.firstChild) {
+        // Elimino por referencia
+        contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+    }
 }

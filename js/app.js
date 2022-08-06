@@ -18,6 +18,18 @@ function cargarEventListeners() {
 
     // Elimina cursos del carrito
     carrito.addEventListener('click', eliminarCurso);
+
+    // Vaciar el carrito. Como es poco código lo hacemos aquí con una función anónima
+    vaciarCarritoBtn.addEventListener('click', ()=>{
+        // Verifico que si esté escuchando el evento clic
+        // console.log('Desde vaciando carrito');
+
+        // Reinicio o reseteo el arreglo
+        articulosCarrito = [];
+
+        // Limpio el html eliminándolo todo del carrito
+        limpiarHTML();
+    });
         
 };
 // Fin cargarEventListeners
@@ -168,7 +180,7 @@ function eliminarCurso(e) {
     if (e.target.classList.contains('borrar-curso')) {
         // veo que se da click en un enlace el cual, tiene el data-id
         // console.log(e.target);
-        
+
         // Obtengo el data-id del curso que quiero eliminar
         const cursoId = e.target.getAttribute('data-id');
 

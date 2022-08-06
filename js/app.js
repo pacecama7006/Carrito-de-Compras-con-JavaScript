@@ -65,12 +65,40 @@ function leerDatosCurso(curso) {
     // Veo como se conforma el objeto
     // console.log(infoCurso);
 
-    // Agrega elementos al arreglo de carrito. Tomo una copia porque necesito la referencia
-    // de los artículos que se van agregando, por eso utilizo spread y le agrego el objeto
-    // infoCurso
-    articulosCarrito = [...articulosCarrito, infoCurso];
-    // Veo como se va formando el arrego
-    // console.log(articulosCarrito);
+    // Revisa si un curso ya existe en el carrito. Utilizo .some que me permite iterar
+    // sobre un arreglo de objetos y verificar si un elemento existe en él
+    const existe = articulosCarrito.some(curso => curso.id === infoCurso.id);
+    // console.log(existe);
+
+    // Si existe, actualizamos la cantidad, en caso contrario tomamos el nuevo arreglo
+    // del map como curso
+    if (existe) {
+        // Actualizamos la cantidad
+        // Creamos un map para crear un nuevo arreglo de artículos carrito
+        const cursos = articulosCarrito.map(curso => {
+            // Buscamos el artículo duplicado
+            if (curso.id === infoCurso.id) {
+                // Agrego en 1 la cantidad
+                curso.cantidad++;
+                // retornamos el curso con la cantidad modificada
+                return curso;
+            }else{
+                // retornamos el resto de los cursos sin agregar cantdad
+                return curso;
+            }
+        });
+        // Agregamos la actualización al carrito
+        articulosCarrito = [...cursos];
+
+    } else {
+        // Agregamos el curso al carrito
+        // Agrega elementos al arreglo de carrito. Tomo una copia porque necesito la referencia
+        // de los artículos que se van agregando, por eso utilizo spread y le agrego el objeto
+        // infoCurso
+        articulosCarrito = [...articulosCarrito, infoCurso];
+        // Veo como se va formando el arrego
+        // console.log(articulosCarrito);
+    }
 
     // Llamada a carritoHTML
     carritoHTML();
@@ -85,7 +113,8 @@ function carritoHTML() {
     // Recorro el carrito y genera el HTML
     articulosCarrito.forEach(curso => {
         // veo lo que tiene el curso
-        console.log(curso);
+        // console.log(curso);
+        
         // Variable haciendo destructuring para tener los valores del curso
         const {imagen, titulo, precio, cantidad, id} = curso;
         

@@ -15,6 +15,9 @@ cargarEventListeners();
 function cargarEventListeners() {
     // Listener a la listaCursos cuando presionas Agregar al carrito
     listaCursos.addEventListener('click', agregarCurso);
+
+    // Elimina cursos del carrito
+    carrito.addEventListener('click', eliminarCurso);
         
 };
 // Fin cargarEventListeners
@@ -114,7 +117,7 @@ function carritoHTML() {
     articulosCarrito.forEach(curso => {
         // veo lo que tiene el curso
         // console.log(curso);
-        
+
         // Variable haciendo destructuring para tener los valores del curso
         const {imagen, titulo, precio, cantidad, id} = curso;
         
@@ -139,7 +142,7 @@ function carritoHTML() {
 };
 // Fin carritoHTML
 
-// Elimina los cursos del Tbody
+// Limpia los cursos del Tbody
 function limpiarHTML() {
     // Forma lenta de limpiar el carrito
     contenedorCarrito.innerHTML = '';
@@ -151,3 +154,33 @@ function limpiarHTML() {
         contenedorCarrito.removeChild(contenedorCarrito.firstChild);
     }
 }
+// Fin limpiarHTML
+
+// Función que elimina un curso del carrito
+function eliminarCurso(e) {
+    // Verifico comunicación
+    // console.log('Desde eliminar curso');
+    // Veo que clases se tienen donde doy clic. Solo me aparece la clase si doy click en la X del
+    // carrito
+    // console.log(e.target.classList);
+
+    // Si donde doy click en un elemento que tiene la clase borrar-curso
+    if (e.target.classList.contains('borrar-curso')) {
+        // veo que se da click en un enlace el cual, tiene el data-id
+        // console.log(e.target);
+        
+        // Obtengo el data-id del curso que quiero eliminar
+        const cursoId = e.target.getAttribute('data-id');
+
+        // Con filter eliminamos del arreglo articulosCarrito por el data-id
+        // Que me genere un articulosCarrito con los cursos que tienen un id distinto a cursoId
+        articulosCarrito = articulosCarrito.filter(curso => curso.id !== cursoId);
+        // Compruebo en consola que si se elimina de articulosCarrito
+        // console.log(articulosCarrito);
+
+        // Vuelvo a mandar llamar a carritoHtml, para que me pinte en el html la nueva composición del carrito
+        carritoHTML();
+
+    }
+}
+// Fin eliminarCurso
